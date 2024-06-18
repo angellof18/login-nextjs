@@ -24,15 +24,17 @@ export const LoginDesktop = () => {
         const userData = { usuario, password: SHA256(password).toString() }
         const result = await axios.post('/api/login', userData)
         console.log(result)
-        if (result.data == 'Usuario no encontrado') {
-            alert('El usuario no existe')
+        if (!result.data || result.data.length === 0) {
+            alert('Usuario no encontrado')
+            form.current.reset()
+            return
+        }
+
+        const encryptPass = result.data[0].password
+        if (userData.password === encryptPass) {
+            alert('SESION CORRECTA')
         } else {
-            const encryptPass = result.data[0].password
-            if (userData.password == encryptPass) {
-                alert('SESION CORRECTA')
-            } else {
-                alert('Contraseña incorrecta')
-            }
+            alert('Contraseña incorrecta')
         }
 
         form.current.reset()
