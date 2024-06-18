@@ -23,12 +23,9 @@ export const LoginDesktop = () => {
         e.preventDefault()
         const userData = { usuario, password: SHA256(password).toString() }
         const result = await axios.post('/api/login', userData)
-        console.log(result)
         if (result.data == 'Usuario no encontrado') {
             alert('El usuario no existe')
         } else {
-            console.log('pass: ', userData.password)
-            console.log('pass2: ', result.data[0].password)
             const encryptPass = result.data[0].password
             if (userData.password == encryptPass) {
                 alert('SESION CORRECTA')
