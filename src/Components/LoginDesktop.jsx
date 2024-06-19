@@ -23,20 +23,7 @@ export const LoginDesktop = () => {
         e.preventDefault()
         const userData = { usuario, password: SHA256(password).toString() }
         const { data } = await axios.post('/api/login', userData)
-        if (!data || data.length === 0) {
-            alert('Usuario no encontrado')
-            form.current.reset()
-            return
-        }
-
-        const encryptPass = data.password
-        if (userData.password === encryptPass) {
-            alert('SESION CORRECTA')
-        } else {
-            console.log(`pass: ${encryptPass} passDB: ${data.password}`)
-            alert('Contraseña incorrecta')
-        }
-
+        alert(data.message)
         form.current.reset()
     }
 
