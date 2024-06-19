@@ -1,24 +1,28 @@
-import { conn } from "@/libs/mysql";
+
+import { pool } from "@/libs/mysql";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
     try {
-        const data = await request.json()
-        const correo = await conn.query('SELECT * FROM usuarios WHERE correo = ?', [data.correo])
-        const usuario = await conn.query('SELECT * FROM usuarios WHERE usuario = ?', [data.usuario])
+        const { nombre, ap_paterno, ap_materno, correo, usuario, password } = await request.json()
+        const correoQuery = 'SELECT * FROM usuarios WHERE correo = ?'
+        const usuarioQuery = 'SELECT * FROM usuarios WHERE usuario = ?'
+        const insertQuery = 'INSERT INTO usuarios (nombre, ap_paterno, ap_materno, correo, usuario, password) VALUES(?,?,?,?,?,?)'
 
-        if (correo.length > 0) {
+        const [correoResult] = await pool.execute(correoQuery, [correo])
+        const [usuarioResult] = await pool.execute(usuarioQuery, [usuario])
+
+        if (correoResult.length > 0) {
             return NextResponse.json({ message: 'El correo ya esta registrado a otra cuenta' })
-        } else if (usuario.length > 0) {
+        } else if (usuarioResult.length > 0) {
             return NextResponse.json({ message: 'El usuario ya existe' })
         } else {
-            await conn.query('INSERT INTO usuarios SET ?', [data])
+            const [result] = await pool.execute(insertQuery, [nombre, ap_paterno, ap_materno, correo, usuario, password])
+            console.log(result)
             return NextResponse.json({ message: 'Registro exitoso' })
         }
 
     } catch (err) {
-        return NextResponse.json({
-            message: err.message
-        })
+        return NextResponse.json({ message: err.message })
     }
 }
