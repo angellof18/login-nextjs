@@ -39,12 +39,12 @@ export const SignDesktop = () => {
         const userData = { nombre, ap_paterno, ap_materno, correo, usuario, password }
         if (userData.password == SHA256(passVerify).toString()) {
             const { data } = await axios.post('/api/sign', userData)
-            if (data == 'Registro exitoso') {
-                alert(data)
+            if (data.message == 'Registro exitoso') {
+                alert(data.message)
                 form.current.reset()
                 route.push('/')
             } else {
-                alert(data)
+                alert(data.message)
             }
 
         } else {
