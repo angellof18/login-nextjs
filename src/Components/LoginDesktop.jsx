@@ -33,6 +33,7 @@ export const LoginDesktop = () => {
         if (userData.password === encryptPass) {
             alert('SESION CORRECTA')
         } else {
+            console.log(`pass: ${encryptPass} passDB: ${data.password}`)
             alert('Contraseña incorrecta')
         }
 
