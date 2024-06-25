@@ -1,11 +1,10 @@
-import { LoginDesktop } from "@/Components/LoginDesktop";
 import '@/app/global.css'
 import Image from "next/image";
 
-export default function Home() {
+export default function Root() {
   return (
     <main className="background">
-      <LoginDesktop />
+      MAIN
     </main>
   );
 }

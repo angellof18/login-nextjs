@@ -1,4 +1,5 @@
 "use client"
+import { useAuthContext } from "@/Contexts/AuthContext"
 import axios from "axios"
 import { SHA256 } from "crypto-js"
 import { useRouter } from "next/navigation"
@@ -9,6 +10,7 @@ export const LoginDesktop = () => {
     const router = useRouter()
     const [password, setPassword] = useState('')
     const [usuario, setUsuario] = useState('')
+    const { login } = useAuthContext()
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -23,8 +25,16 @@ export const LoginDesktop = () => {
         e.preventDefault()
         const userData = { usuario, password: SHA256(password).toString() }
         const { data } = await axios.post('/api/login', userData)
-        alert(data.message)
-        form.current.reset()
+        if (data.message == 'SESION CORRECTA') {
+            login({
+                user: usuario,
+                pwd: SHA256(password).toString()
+            })
+            router.push('/home')
+        } else {
+            alert(data.message)
+            form.current.reset()
+        }
     }
 
     return (

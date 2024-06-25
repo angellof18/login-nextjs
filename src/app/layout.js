@@ -5,6 +5,7 @@ import 'bulma-quickview/dist/css/bulma-quickview.min.css'
 import 'bulma-quickview/dist/js/bulma-quickview.min.js'
 import 'bulma-pageloader/dist/css/bulma-pageloader.min.css'
 import 'bulma-spacing/css/bulma-spacing.min.css'
+import { AuthContextProvider } from "@/Contexts/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AuthContextProvider>
+          {children}
+        </AuthContextProvider>
+      </body>
     </html>
   );
 }

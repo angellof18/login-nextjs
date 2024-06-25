@@ -13,7 +13,8 @@ export async function POST(request) {
         const [usuarioResult] = await pool.execute(usuarioQuery, [usuario])
 
         if (correoResult.length > 0) {
-            return NextResponse.json({ message: 'El correo ya esta registrado a otra cuenta' })
+            return NextResponse.json(
+                { message: 'El correo ya esta registrado a otra cuenta' })
         } else if (usuarioResult.length > 0) {
             return NextResponse.json({ message: 'El usuario ya existe' })
         } else {
